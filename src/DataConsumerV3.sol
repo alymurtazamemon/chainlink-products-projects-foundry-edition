@@ -21,12 +21,20 @@ contract DataConsumerV3 {
     function getChainlinkDataFeedLatestAnswer() public view returns (int) {
         // prettier-ignore
         (
-            /* uint80 roundID */,
-            int answer,
-            /*uint startedAt*/,
-            /*uint timeStamp*/,
-            /*uint80 answeredInRound*/
+            /* uint80 roundID */, // * The round ID
+            int answer, // * price
+            /*uint startedAt*/, // * Timestamp of when the round started.
+            /*uint updatedAt*/, // * Timestamp of when the round was updated.
+            /*uint80 answeredInRound*/ // * Deprecated - Previously used when answers could take multiple rounds to be computed
         ) = dataFeed.latestRoundData();
         return answer;
+    }
+
+    function getVersion() external view returns (uint256) {
+        return dataFeed.version();
+    }
+
+    function getDecimals() external view returns (uint8) {
+        return dataFeed.decimals();
     }
 }

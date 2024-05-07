@@ -3,4 +3,15 @@ src = "src"
 out = "out"
 libs = ["lib"]
 
+# give permission to foundry-devops dependency so it can read latest deployed contracts for given chain id.
+fs_permissions = [{ access = "read", path = "./broadcast" }]
+
+
+[etherscan]
+sepolia = { key = "$ETHERSCAN_API_KEY" }
+
+[rpc_endpoints]
+anvil = "${ANVIL_RPC_URL}"
+sepolia = "${SEPOLIA_RPC_URL}"
+
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
