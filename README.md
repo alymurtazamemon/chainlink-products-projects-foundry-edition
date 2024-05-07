@@ -14,7 +14,9 @@ This repository contains the implementation of Chainlink products. It demonstrat
 ## Quickstart
 
 ```bash
-
+git clone https://github.com/alymurtazamemon/chainlink-products-projects-foundry-edition.git
+cd chainlink-products-projects-foundry-edition
+forge build
 ```
 
 ## Usage
