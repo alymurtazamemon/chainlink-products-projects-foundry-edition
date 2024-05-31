@@ -6,6 +6,13 @@ import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interf
 contract DataConsumerV3 {
     AggregatorV3Interface internal dataFeed;
 
+    // * Timeout should be according to the heartbeat value of price feed.
+    uint256 private constant TIMEOUT = 1 hours; // 60 * 60 = 3600s
+
+    error DataConsumerV3__IncorrectAnswer(int answer);
+    error DataConsumerV3__UpdateTimeIsZero();
+    error DataConsumerV3__StalePrice();
+
     /**
      * Network: Sepolia
      * Aggregator: ETH/USD
@@ -24,9 +31,21 @@ contract DataConsumerV3 {
             /* uint80 roundID */, // * The round ID
             int answer, // * price
             /*uint startedAt*/, // * Timestamp of when the round started.
-            /*uint updatedAt*/, // * Timestamp of when the round was updated.
+            uint updatedAt, // * Timestamp of when the round was updated.
             /*uint80 answeredInRound*/ // * Deprecated - Previously used when answers could take multiple rounds to be computed
         ) = dataFeed.latestRoundData();
+
+        if (answer <= 0) {
+            revert DataConsumerV3__IncorrectAnswer(answer);
+        }
+
+        if (updatedAt == 0) {
+            revert DataConsumerV3__UpdateTimeIsZero();
+        }
+
+        uint256 secondsSince = block.timestamp - updatedAt;
+        if (secondsSince > TIMEOUT) revert DataConsumerV3__StalePrice();
+
         return answer;
     }
 
