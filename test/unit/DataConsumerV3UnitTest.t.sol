@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 import {Test} from "forge-std/Test.sol";
 import {console} from "forge-std/console.sol";
 
-import {DeployDataConsumerV3, DataConsumerV3, HelperConfig} from "../../script/DeployDataConsumerV3.s.sol";
+import {DeployDataConsumerV3, DataConsumerV3, HelperConfig} from "../../script/deploy/DeployDataConsumerV3.s.sol";
 
 contract DataConsumerV3UnitTest is Test {
     DataConsumerV3 consumer;
