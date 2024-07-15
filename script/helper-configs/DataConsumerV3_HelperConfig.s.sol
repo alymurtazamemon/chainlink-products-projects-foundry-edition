@@ -6,7 +6,7 @@ import {Script} from "forge-std/Script.sol";
 
 import {MockV3Aggregator} from "@chainlink/contracts/src/v0.8/tests/MockV3Aggregator.sol";
 
-contract HelperConfig is Script {
+contract DataConsumerV3_HelperConfig is Script {
     NetworkConfig public activeNetworkConfig;
 
     uint8 public constant DECIMALS = 8;
