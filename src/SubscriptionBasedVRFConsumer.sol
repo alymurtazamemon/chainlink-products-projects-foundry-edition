@@ -41,11 +41,11 @@ contract SubscriptionBasedVRFConsumer is VRFConsumerBaseV2Plus {
      * VRF Coordinator: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B
      */
     constructor(
-        address vrfCoordinatorV2Point5, // * VRF V2.5 version
+        address vrfCoordinatorV2_5, // * VRF V2.5 version
         uint256 subscriptionId,
         uint32 callbackGasLimit,
         bytes32 gasLane
-    ) VRFConsumerBaseV2Plus(vrfCoordinatorV2Point5) {
+    ) VRFConsumerBaseV2Plus(vrfCoordinatorV2_5) {
         s_subscriptionId = subscriptionId;
         s_callbackGasLimit = callbackGasLimit;
         s_gasLane = gasLane;
@@ -127,11 +127,7 @@ contract SubscriptionBasedVRFConsumer is VRFConsumerBaseV2Plus {
         return (request.fulfilled, request.randomWords);
     }
 
-    function getVRFCoordinatorV2Point5Address()
-        external
-        view
-        returns (address)
-    {
+    function getVRFCoordinatorV2_5Address() external view returns (address) {
         return address(s_vrfCoordinator);
     }
 
