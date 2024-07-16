@@ -131,10 +131,6 @@ contract SubscriptionBasedVRFConsumer is VRFConsumerBaseV2Plus {
         return address(s_vrfCoordinator);
     }
 
-    function getSubscriptionId() external view returns (uint256) {
-        return s_subscriptionId;
-    }
-
     function getCallbackGasLimit() external view returns (uint256) {
         return s_callbackGasLimit;
     }
