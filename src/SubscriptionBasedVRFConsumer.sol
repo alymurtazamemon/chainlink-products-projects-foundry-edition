@@ -88,7 +88,7 @@ contract SubscriptionBasedVRFConsumer is VRFConsumerBaseV2Plus {
 
     function fulfillRandomWords(
         uint256 requestId,
-        uint256[] memory randomWords
+        uint256[] calldata randomWords
     ) internal virtual override {
         if (!s_requests[requestId].exists) {
             revert SubscriptionBasedVRFConsumer__RequestIdNotFound(requestId);
