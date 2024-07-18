@@ -10,6 +10,8 @@ ANVIL_PRIVATE_KEY := 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf
 
 ANVIL_NETWORK_ARGS := --rpc-url $(ANVIL_RPC_URL) --private-key $(ANVIL_PRIVATE_KEY) --broadcast
 
+# -> Data Feed Commands
+
 deploy_ConsumerV3_network_anvil:
 	@forge script script/deploy/DeployDataConsumerV3.s.sol:DeployDataConsumerV3 $(ANVIL_NETWORK_ARGS)
 
@@ -21,6 +23,11 @@ test:
 
 forked_test_network_anvil:
 	@forge test --fork-url anvil --match-contract DataConsumerV3ForkedTest
+
+# -> VRF Commands
+
+deploy_SubscriptionVRF_network_anvil:
+	@forge script script/deploy/DeploySubscriptionVRFV2_5.s.sol:DeploySubscriptionVRFV2_5 $(ANVIL_NETWORK_ARGS)
 
 # sepolia setup
 

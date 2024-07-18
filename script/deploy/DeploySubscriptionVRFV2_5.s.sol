@@ -8,6 +8,8 @@ import {console} from "forge-std/console.sol";
 import {SubscriptionBasedVRFConsumer} from "./../../src/SubscriptionBasedVRFConsumer.sol";
 import {SubscriptionVRF_HelperConfig} from "./../helper-configs/SubscriptionVRF_HelperConfig.s.sol";
 
+import {VRFCoordinatorV2_5Mock} from "@chainlink/contracts/src/v0.8/vrf/mocks/VRFCoordinatorV2_5Mock.sol";
+
 contract DeploySubscriptionVRFV2_5 is Script {
     function run()
         public
@@ -25,6 +27,13 @@ contract DeploySubscriptionVRFV2_5 is Script {
                 config.callbackGasLimit,
                 config.gasLane
             );
+
+        if (block.chainid == helperConfig.LOCAL_CHAIN_ID()) {
+            VRFCoordinatorV2_5Mock vrfMock = VRFCoordinatorV2_5Mock(
+                config.vrfCoordinatorV2_5
+            );
+            vrfMock.addConsumer(config.subscriptionId, address(vrfConsumer));
+        }
 
         vm.stopBroadcast();
 

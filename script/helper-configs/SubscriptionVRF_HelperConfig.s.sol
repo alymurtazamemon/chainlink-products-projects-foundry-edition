@@ -4,9 +4,21 @@ pragma solidity ^0.8.0;
 
 import {Script} from "forge-std/Script.sol";
 
-contract SubscriptionVRF_HelperConfig is Script {
-    uint256 private constant ETH_SEPOLIA_CHAIN_ID = 11155111;
+import {VRFCoordinatorV2_5Mock} from "@chainlink/contracts/src/v0.8/vrf/mocks/VRFCoordinatorV2_5Mock.sol";
 
+contract SubscriptionVRF_HelperConfig is Script {
+    // * mock VRF variables
+    uint96 private MOCK_BASE_FEE = 0.25 ether; // 0.1 LINK
+    uint96 private MOCK_GAS_PRICE_LINK = 1e9; // in LINK tokens
+    // * LINK / ETH price
+    int256 private MOCK_WEI_PER_UINT_LINK = 4e15; // LINK/ETH price (at the time of coding)
+    uint96 private constant FUND_AMOUNT = 3 ether; // 100 LINK
+
+    // * network chain ids
+    uint256 private constant ETH_SEPOLIA_CHAIN_ID = 11155111;
+    uint256 public constant LOCAL_CHAIN_ID = 31337;
+
+    NetworkConfig private localNetworkConfig;
     mapping(uint256 chainId => NetworkConfig) private networkConfigs;
 
     struct NetworkConfig {
@@ -22,15 +34,17 @@ contract SubscriptionVRF_HelperConfig is Script {
         networkConfigs[ETH_SEPOLIA_CHAIN_ID] = getETHSepoliaNetworkConfig();
     }
 
-    function getConfig() external view returns (NetworkConfig memory) {
+    function getConfig() external returns (NetworkConfig memory) {
         return getNetworkConfig(block.chainid);
     }
 
     function getNetworkConfig(
         uint256 chainId
-    ) private view returns (NetworkConfig memory) {
+    ) private returns (NetworkConfig memory) {
         if (networkConfigs[chainId].vrfCoordinatorV2_5 != address(0)) {
             return networkConfigs[chainId];
+        } else if (chainId == LOCAL_CHAIN_ID) {
+            return getOrCreateLocalBlockchainNetworkConfig();
         } else {
             revert SubscriptionVRF_HelperConfig_InvalidChainId(chainId);
         }
@@ -48,5 +62,42 @@ contract SubscriptionVRF_HelperConfig is Script {
                 callbackGasLimit: 40000,
                 gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae
             });
+    }
+
+    function getOrCreateLocalBlockchainNetworkConfig()
+        private
+        returns (NetworkConfig memory)
+    {
+        if (localNetworkConfig.vrfCoordinatorV2_5 != address(0)) {
+            return localNetworkConfig;
+        }
+
+        vm.startBroadcast();
+
+        VRFCoordinatorV2_5Mock vrfMock = new VRFCoordinatorV2_5Mock(
+            MOCK_BASE_FEE,
+            MOCK_GAS_PRICE_LINK,
+            MOCK_WEI_PER_UINT_LINK
+        );
+
+        /*
+         * Note: Due to an arithmetic underflow/overflow error in the SubscriptionAPI contract (lib/chainlink-brownie-contracts/contracts/src/v0.8/vrf/dev/SubscriptionAPI.sol) of the chainlink/chainlink-brownie-contracts dependency, I was unable to call the createSubscription function. After some debugging, I found that the error was caused by the subtraction of blockhash(block.number - 1) in the createSubscription function while generating subId. I removed the -1 from this line, and everything started working as expected. The modified line now looks like this:
+
+         * subId = uint256(keccak256(abi.encodePacked(msg.sender, blockhash(block.number), address(this), currentSubNonce)));
+         */
+
+        uint256 subscriptionId = vrfMock.createSubscription();
+        vrfMock.fundSubscription(subscriptionId, FUND_AMOUNT);
+
+        vm.stopBroadcast();
+
+        localNetworkConfig = NetworkConfig({
+            vrfCoordinatorV2_5: address(vrfMock),
+            subscriptionId: subscriptionId,
+            callbackGasLimit: 40000,
+            gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae
+        });
+
+        return localNetworkConfig;
     }
 }
