@@ -8,11 +8,11 @@ import {VRFCoordinatorV2_5Mock} from "@chainlink/contracts/src/v0.8/vrf/mocks/VR
 
 contract SubscriptionVRF_HelperConfig is Script {
     // * mock VRF variables
-    uint96 private MOCK_BASE_FEE = 0.25 ether; // 0.1 LINK
-    uint96 private MOCK_GAS_PRICE_LINK = 1e9; // in LINK tokens
+    uint96 private MOCK_BASE_FEE = 100000000000000000; // 0.1 LINK
+    uint96 private MOCK_GAS_PRICE_LINK = 1000000000; // in LINK tokens
     // * LINK / ETH price
-    int256 private MOCK_WEI_PER_UINT_LINK = 4e15; // LINK/ETH price (at the time of coding)
-    uint96 private constant FUND_AMOUNT = 3 ether; // 100 LINK
+    int256 private MOCK_WEI_PER_UINT_LINK = 3977213847536709; // LINK/ETH price (at the time of coding)
+    uint96 private constant FUND_AMOUNT = 100000000000000000000; // 100 LINK
 
     // * network chain ids
     uint256 private constant ETH_SEPOLIA_CHAIN_ID = 11155111;
