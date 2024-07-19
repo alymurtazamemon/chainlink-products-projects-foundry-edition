@@ -1,7 +1,7 @@
 -include .env
 
 # # Adding .PHONY to a target will prevent Make from confusing the phony target with a file name.
-.PHONY: deploy_ConsumerV3_network_anvil run_LatestRoundData_network_anvil deploy_ConsumerV3_network_sepolia run_LatestRoundData_network_sepolia test
+.PHONY: deploy_ConsumerV3_network_anvil run_LatestRoundData_network_anvil deploy_ConsumerV3_network_sepolia run_LatestRoundData_network_sepolia test deploy_SubscriptionVRF_network_anvil run_RequestRandomWords_network_anvil
 
 # anvil setup
 
@@ -28,6 +28,9 @@ forked_test_network_anvil:
 
 deploy_SubscriptionVRF_network_anvil:
 	@forge script script/deploy/DeploySubscriptionVRFV2_5.s.sol:DeploySubscriptionVRFV2_5 $(ANVIL_NETWORK_ARGS)
+
+run_RequestRandomWords_network_anvil:
+	@forge script script/interaction/SubscriptionVRFInteractions.s.sol:RequestRandomWords $(ANVIL_NETWORK_ARGS)
 
 # sepolia setup
 
