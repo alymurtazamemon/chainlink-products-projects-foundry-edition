@@ -5,6 +5,7 @@ pragma solidity ^0.8.0;
 import {Script} from "forge-std/Script.sol";
 
 import {VRFCoordinatorV2_5Mock} from "@chainlink/contracts/src/v0.8/vrf/mocks/VRFCoordinatorV2_5Mock.sol";
+import {LOCAL_CHAIN_ID, ETH_SEPOLIA_CHAIN_ID} from "helper-config.sol";
 
 contract SubscriptionVRF_HelperConfig is Script {
     // * mock VRF variables
@@ -13,10 +14,6 @@ contract SubscriptionVRF_HelperConfig is Script {
     // * LINK / ETH price
     int256 private MOCK_WEI_PER_UINT_LINK = 3977213847536709; // LINK/ETH price (at the time of coding)
     uint96 private constant FUND_AMOUNT = 100000000000000000000; // 100 LINK
-
-    // * network chain ids
-    uint256 private constant ETH_SEPOLIA_CHAIN_ID = 11155111;
-    uint256 public constant LOCAL_CHAIN_ID = 31337;
 
     NetworkConfig private localNetworkConfig;
     mapping(uint256 chainId => NetworkConfig) private networkConfigs;
