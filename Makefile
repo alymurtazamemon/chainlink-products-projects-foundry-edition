@@ -1,7 +1,7 @@
 -include .env
 
 # # Adding .PHONY to a target will prevent Make from confusing the phony target with a file name.
-.PHONY: deploy_ConsumerV3_network_anvil run_LatestRoundData_network_anvil deploy_ConsumerV3_network_sepolia run_LatestRoundData_network_sepolia test deploy_SubscriptionVRF_network_anvil run_RequestRandomWords_network_anvil
+.PHONY: deploy_ConsumerV3_network_anvil run_LatestRoundData_network_anvil deploy_ConsumerV3_network_sepolia run_LatestRoundData_network_sepolia test deploy_SubscriptionVRF_network_anvil run_RequestRandomWords_network_anvil deploy_SubscriptionVRF_network_sepolia
 
 # anvil setup
 
@@ -36,6 +36,8 @@ run_RequestRandomWords_network_anvil:
 
 SEPOLIA_NETWORK_ARGS := --rpc-url $(SEPOLIA_RPC_URL) --private-key $(PRIVATE_KEY) --broadcast
 
+# -> Data Feed Commands
+
 deploy_ConsumerV3_network_sepolia:
 	@forge script script/deploy/DeployDataConsumerV3.s.sol:DeployDataConsumerV3 $(SEPOLIA_NETWORK_ARGS) --verify --etherscan-api-key $(ETHERSCAN_API_KEY)
 
@@ -44,3 +46,8 @@ run_LatestRoundData_network_sepolia:
 
 forked_test_network_sepolia:
 	@forge test --fork-url sepolia --match-contract DataConsumerV3ForkedTest
+
+# -> VRF Commands
+
+deploy_SubscriptionVRF_network_sepolia:
+	@forge script script/deploy/DeploySubscriptionVRFV2_5.s.sol:DeploySubscriptionVRFV2_5 $(SEPOLIA_NETWORK_ARGS) --verify --etherscan-api-key $(ETHERSCAN_API_KEY) --legacy
