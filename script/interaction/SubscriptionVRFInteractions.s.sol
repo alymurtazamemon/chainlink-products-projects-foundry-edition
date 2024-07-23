@@ -57,10 +57,16 @@ contract RequestRandomWords is GetMostRecentDeployment {
             );
         }
 
+        vm.stopBroadcast();
+    }
+}
+
+contract GetRequestStatus is GetMostRecentDeployment {
+    function run() external view {
+        uint256 lastRequestId = vrfConsumer.getLastRequestId();
+
         (bool status, uint256[] memory randomWords) = vrfConsumer
             .getRequestStatus(lastRequestId);
-
-        vm.stopBroadcast();
 
         console.log("Status of request is: ", status);
         console.log("Random Number is: ", randomWords[0]);

@@ -54,3 +54,6 @@ deploy_SubscriptionVRF_network_sepolia:
 
 run_RequestRandomWords_network_sepolia:
 	@forge script script/interaction/SubscriptionVRFInteractions.s.sol:RequestRandomWords $(SEPOLIA_NETWORK_ARGS) --legacy
+
+run_GetRequestStatus_network_sepolia:
+	@forge script script/interaction/SubscriptionVRFInteractions.s.sol:GetRequestStatus $(SEPOLIA_NETWORK_ARGS) --legacy
