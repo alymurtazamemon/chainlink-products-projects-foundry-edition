@@ -44,7 +44,7 @@ forge build
   ```
 - `Test (Unit)`: Run the unit test using command;
   ```
-  make test
+  make test_data_consumer_v3_uint_tests_locally
   ```
 - `Test (forked)`: Run the test on the forked Anvil network. Make sure set the `rpc_endpoints` in the `foundry.toml` file.
   ```
