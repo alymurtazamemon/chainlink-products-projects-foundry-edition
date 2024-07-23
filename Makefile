@@ -1,7 +1,7 @@
 -include .env
 
 # # Adding .PHONY to a target will prevent Make from confusing the phony target with a file name.
-.PHONY: deploy_ConsumerV3_network_anvil run_LatestRoundData_network_anvil deploy_ConsumerV3_network_sepolia run_LatestRoundData_network_sepolia test deploy_SubscriptionVRF_network_anvil run_RequestRandomWords_network_anvil deploy_SubscriptionVRF_network_sepolia run_RequestRandomWords_network_sepolia run_GetRequestStatus_network_sepolia test_subscription_vrf_uint_tests_locally
+.PHONY: deploy_ConsumerV3_network_anvil run_LatestRoundData_network_anvil deploy_ConsumerV3_network_sepolia run_LatestRoundData_network_sepolia test_data_consumer_v3_uint_tests_locally deploy_SubscriptionVRF_network_anvil run_RequestRandomWords_network_anvil deploy_SubscriptionVRF_network_sepolia run_RequestRandomWords_network_sepolia run_GetRequestStatus_network_sepolia test_subscription_vrf_uint_tests_locally
 
 # anvil setup
 
@@ -18,7 +18,7 @@ deploy_ConsumerV3_network_anvil:
 run_LatestRoundData_network_anvil:
 	@forge script script/interaction/DataConsumerV3Interactions.s.sol:LatestRoundData $(ANVIL_NETWORK_ARGS)
 
-test:
+test_data_consumer_v3_uint_tests_locally:
 	@forge test --mc DataConsumerV3UnitTest
 
 forked_test_network_anvil:
