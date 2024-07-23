@@ -11,8 +11,10 @@ import {LOCAL_CHAIN_ID} from "helper-config.sol";
 
 import {VRFCoordinatorV2_5Mock} from "@chainlink/contracts/src/v0.8/vrf/mocks/VRFCoordinatorV2_5Mock.sol";
 
-contract RequestRandomWords is Script {
-    function run() external {
+contract GetMostRecentDeployment is Script {
+    SubscriptionBasedVRFConsumer vrfConsumer;
+
+    constructor() {
         console.log("Chain ID is: ", block.chainid);
 
         address latestContractAddress = DevOpsTools.get_most_recent_deployment(
@@ -25,10 +27,12 @@ contract RequestRandomWords is Script {
             latestContractAddress
         );
 
-        SubscriptionBasedVRFConsumer vrfConsumer = SubscriptionBasedVRFConsumer(
-            latestContractAddress
-        );
+        vrfConsumer = SubscriptionBasedVRFConsumer(latestContractAddress);
+    }
+}
 
+contract RequestRandomWords is GetMostRecentDeployment {
+    function run() external {
         vm.startBroadcast();
 
         vrfConsumer.requestRandomNumber();
