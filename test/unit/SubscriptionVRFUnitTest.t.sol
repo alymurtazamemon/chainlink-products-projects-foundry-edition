@@ -30,6 +30,11 @@ contract SubscriptionVRFUnitTest is Test {
         (vrfConsumer, helperConfig) = deployer.run();
     }
 
+    function test_onlyOnwerCanCallRequestRandomNumber() external {
+        vm.expectRevert(bytes("Only callable by owner"));
+        vrfConsumer.requestRandomNumber();
+    }
+
     function test_requestRandomNumber() external {
         vm.prank(msg.sender);
 
