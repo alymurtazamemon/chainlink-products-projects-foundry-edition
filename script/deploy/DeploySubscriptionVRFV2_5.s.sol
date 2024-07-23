@@ -14,7 +14,7 @@ import {VRFCoordinatorV2_5Mock} from "@chainlink/contracts/src/v0.8/vrf/mocks/VR
 contract DeploySubscriptionVRFV2_5 is Script {
     function run()
         public
-        returns (SubscriptionBasedVRFConsumer, SubscriptionVRF_HelperConfig)
+        returns (SubscriptionBasedVRFConsumer, SubscriptionVRF_HelperConfig, address)
     {
         SubscriptionVRF_HelperConfig helperConfig = new SubscriptionVRF_HelperConfig();
         SubscriptionVRF_HelperConfig.NetworkConfig memory config = helperConfig
@@ -38,6 +38,6 @@ contract DeploySubscriptionVRFV2_5 is Script {
 
         vm.stopBroadcast();
 
-        return (vrfConsumer, helperConfig);
+        return (vrfConsumer, helperConfig, config.vrfCoordinatorV2_5);
     }
 }
