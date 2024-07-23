@@ -5,9 +5,6 @@ pragma solidity ^0.8.7;
 import {VRFConsumerBaseV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
 import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
 
-// * errors
-error SubscriptionBasedVRFConsumer__RequestIdNotFound(uint256 requestId);
-
 contract SubscriptionBasedVRFConsumer is VRFConsumerBaseV2Plus {
     // * state variables
 
@@ -34,6 +31,10 @@ contract SubscriptionBasedVRFConsumer is VRFConsumerBaseV2Plus {
 
     event RequestSent(uint256 requestId, uint32 numWords);
     event RequestFulfilled(uint256 requestId, uint256[] randomWords);
+
+    // * errors
+
+    error SubscriptionBasedVRFConsumer__RequestIdNotFound(uint256 requestId);
 
     // * constructor
     /**
